@@ -5,6 +5,7 @@ const initialState = {
   apiData: {},
 };
 
+//Reducer with actions for the store
 export const dataSlice = createSlice({
   name: "data",
   initialState,
@@ -32,6 +33,7 @@ export const { setData, incrementId, decrementId, enterId, clearData } =
 
 export default dataSlice.reducer;
 
+//Thunk to fetchData asynchronously whenever there is an id and thunk button is pressed
 export const fetchData = () => {
   const dataThunk = async (dispatch, getState) => {
     const state = getState();

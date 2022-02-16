@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import "./App.css";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, connect } from "react-redux";
 import {
   fetchData,
   incrementId,
@@ -8,10 +9,21 @@ import {
   clearData,
 } from "./features/dataSlice";
 
+//Mapping state values to React props for ConnectAPI
+const mapStateToProps = (state) => ({
+  objectId: state.data.objectId,
+});
+
 function App() {
   const data = useSelector((state) => state.data);
   const dispatch = useDispatch();
 
+  //Re-rendering with useEffect after each change
+  useEffect(() => {
+    dispatch(fetchData());
+  }, [data.objectId, dispatch]);
+
+  //Renders the image from the API fetch
   const artData = () => {
     if (data.apiData) {
       return (
@@ -70,9 +82,13 @@ function App() {
         }}
       />
       <div>{data.apiData.title}</div>
+      <div>Date: {data.apiData.objectDate}</div>
+      <div>{data.apiData.creditLine}</div>
+      <div>{data.apiData.repository}</div>
+
       {artData()}
     </div>
   );
 }
 
-export default App;
+export default connect(mapStateToProps)(App);
